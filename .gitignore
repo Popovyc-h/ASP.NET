@@ -1,0 +1,59 @@
+## === .NET & ASP.NET Core ===
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.user
+*.userosscache
+*.sln.docstates
+
+## === Secret & Environment Files ===
+# Локальні конфігурації та секрети (щоб не злити паролі на GitHub)
+appsettings.Development.json
+appsettings.Local.json
+*.env
+*.env.local
+*.env.development.local
+
+## === IDEs & Editors ===
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.mono
+*.cache
+*.dtbcache
+*.pvkg
+
+# JetBrains Rider / ReSharper
+.idea/
+*.sln.iml
+_ReSharper*/
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+## === Node.js / Front-end (якщо додасте React або Vue) ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+build/
+
+## === OS Generated Files ===
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
