@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Title</title>
+</head>
+<body>
+    <h1>Новий пост</h1>
+
+    <input id="title" />
+
+    <textarea id="content"> </textarea>
+
+    <input id="imageUrl" />
+
+    <div id="categories"></div>
+
+    <button id="btn">Додати</button>
+
+    <p id="message"></p>
+
+    <script>
+const titleInput = document.getElementById("title");
+const contentInput = document.getElementById("content");
+const imageUrlInput = document.getElementById("imageUrl");
+const categoriesDiv = document.getElementById("categories");
+const btn = document.getElementById("btn");
+const message = document.getElementById("message");
+
+async function loadCategories() { 
+    const response = await fetch("/categories")
+    const categories = await response.json();
+
+    categoriesDiv.innerHTML = "";
+
+    categories.forEach(category => { 
+        const checkbox = document.createElement("input")
+        checkbox.type = "checkbox";
+        checkbox.value = category.id;
+
+        const label = document.createElement("label");
+
+        label.appendChild(checkbox);
+        label.append(" " + category.name);
+        categoriesDiv.appendChild(label);
+        categoriesDiv.appendChild(document.createElement("br"));
+    })
+}
+
+loadCategories();
+
+btn.addEventListener("click", async () => {
+    const categoryIds = Array.from(categoriesDiv.querySelectorAll("input:checked")).map(x => Number(x.value));
+
+    var response = await fetch("/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: titleInput.value, content: contentInput.value, imageUrl: imageUrlInput.value, categoryIds: categoryIds })
+    });
+
+    if (response.ok) {
+        message.textContent = "Ви успішно додали новий пост";
+    }
+    else {
+        const error = await response.text();
+        message.textContent = error;
+    }
+});
+
+    </script>
+
+</body>
+</html>

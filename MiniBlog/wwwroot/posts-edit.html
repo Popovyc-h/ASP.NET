@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Title</title>
+</head>
+<body>
+
+    <h1>Редагування поста</h1>
+    
+    <input id="id" placeholder="Введіть ID:"/>
+    
+    <input id="title" placeholder="title:"/>
+    
+    <textarea id="content" placeholder="content:"></textarea>
+    
+    <input id="imageUrl" placeholder="imageUrl"/>
+
+    <button id="btn">Зберегти</button>
+    
+    <p id="message"></p>
+
+    <script>
+const inputId = document.getElementById("id");
+const inputTitle = document.getElementById("title");
+const inputContent = document.getElementById("content");
+const inputImageUrl = document.getElementById("imageUrl");
+const btn = document.getElementById("btn");
+const message = document.getElementById("message");
+
+
+btn.addEventListener("click", async () => {
+    var response = await fetch("/posts/" + inputId.value, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: inputTitle.value, content: inputContent.value, imageUrl: inputImageUrl.value })
+    });
+
+    if (response.ok) {
+        message.textContent = "Пост оновлено";
+    }
+    else {
+        const error = await response.text();
+        message.textContent = error || "Пост не знайдено";
+    }
+})
+    </script>
+
+</body>
+</html>

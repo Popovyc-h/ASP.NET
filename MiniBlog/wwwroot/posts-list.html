@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Title</title>
+</head>
+<body>
+
+    <h1>Список постів</h1>
+
+    <ul id="list"> </ul>
+    
+    <script>
+const list = document.getElementById("list");
+
+async function loadPosts() {
+    const response = await fetch("/posts");
+
+    const posts = await response.json();
+
+    list.innerHTML = "";
+    posts.forEach(post => {
+        const li = document.createElement("li");
+        li.textContent = post.title + post.id;
+        list.appendChild(li);
+
+        const btn = document.createElement("button");
+        btn.textContent = "Видалити";
+        btn.addEventListener("click", async () => {
+            await fetch("/posts/" + post.id, { method: "DELETE" });
+            loadPosts();
+        });
+
+        li.appendChild(btn);
+    })
+}
+loadPosts();
+
+    </script>
+
+</body>
+</html>

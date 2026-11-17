@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Title</title>
+</head>
+<body>
+
+    <h1>Редагування категорії</h1>
+
+    <input id="id" placeholder="Введіть ID:"/>
+    <input id="name" placeholder="Введіть нове ім'я:"/>
+
+    <button id="btn">Зберегти</button>
+    <p id="message"></p>
+
+    <script>
+const inputId = document.getElementById("id");
+const inputName = document.getElementById("name");
+const btn = document.getElementById("btn");
+const message = document.getElementById("message");
+
+btn.addEventListener("click", async () => {
+    var response = await fetch("/categories/" + inputId.value + "?name=" + encodeURIComponent(inputName.value), {
+        method: "PATCH",
+    })
+
+    if (response.ok) {
+        message.textContent = "Категорію оновлено";
+    }
+    else {
+        const error = await response.text();
+        message.textContent = error || "Категорію не знайдено";
+    }
+})
+    </script>
+
+</body>
+</html>

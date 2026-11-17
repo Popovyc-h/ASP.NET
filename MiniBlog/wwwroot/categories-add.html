@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Title</title>
+</head>
+<body>
+    <h1>Нова категорія</h1>
+    
+    <input id="name" placeholder="Назва" />
+
+    <input id="slug" placeholder="Slug" />
+    
+    <button id="btn">Додати</button>
+    <p id="message"></p>
+
+    <script>
+const nameInput = document.getElementById("name");
+const slugInput = document.getElementById("slug");
+const btn = document.getElementById("btn");
+const responseMessage = document.getElementById("message");
+
+btn.addEventListener("click", async () => {
+    var response = await fetch("/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: nameInput.value, slug: slugInput.value })
+    });
+
+    if (response.ok) {
+        responseMessage.textContent = "Ви успішно додали нову категорію";
+    }
+    else { 
+        const error = await response.text();
+        responseMessage.textContent = error;
+    }
+
+    console.log(response.status);
+})
+    </script>
+</body>
+</html>

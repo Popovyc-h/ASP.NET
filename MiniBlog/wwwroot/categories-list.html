@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Title</title>
+</head>
+<body>
+
+    <h1>Список категорій</h1>
+
+    <ul id="list">
+
+    </ul>
+
+    <script>
+const list = document.getElementById("list");
+
+async function loadCategories() { 
+    const response = await fetch("/categories");
+
+    const categories = await response.json();
+
+    list.innerHTML = "";
+    categories.forEach(category => { 
+        const li = document.createElement("li");
+        li.textContent = category.name;
+        list.appendChild(li);
+
+        const btn = document.createElement("button");
+        btn.textContent = "Видалити";
+        btn.addEventListener("click", async () => {
+            await fetch("/categories/" + category.id, { method: "DELETE" });
+            loadCategories();
+        });
+
+        li.appendChild(btn);
+    })
+}
+
+loadCategories();
+
+    </script>
+</body>
+</html>
