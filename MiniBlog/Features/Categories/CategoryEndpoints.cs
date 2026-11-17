@@ -1,4 +1,5 @@
 ﻿using MiniBlog.Data;
+using Scalar.AspNetCore;
 
 namespace MiniBlog.Features.Categories;
 
@@ -13,7 +14,9 @@ public static class CategoryEndpoints
             var result = BlogStorage.Categories.Select(c => new CategoryResponse { Id = c.Id, Name = c.Name, Slug = c.Slug, Link = $"/posts/category/{c.Slug}" }).ToList();
 
             return Results.Ok(result);
-        });
+        })
+            .WithName("GetAllCategory")
+            .WithSummary("Отримати список усіх категорій");
 
         group.MapPost("/", (Category category) =>
         {
@@ -24,7 +27,9 @@ public static class CategoryEndpoints
             var newCategory = BlogStorage.AddCategory(category);
 
             return Results.Ok(newCategory);
-        });
+        })
+            .WithName("CreateCategory")
+            .WithSummary("Створити нову категорію");
 
         group.MapPatch("/{id:int}", (int id, string name) =>
         {
@@ -36,7 +41,9 @@ public static class CategoryEndpoints
 
             category.Name = name;
             return Results.Ok(category);
-        });
+        })
+            .WithName("EditCategoryName")
+            .WithSummary("Редагувати назву категорії");
 
         group.MapDelete("/{id:int}", (int id) =>
         {
@@ -46,6 +53,8 @@ public static class CategoryEndpoints
 
             BlogStorage.Categories.Remove(category);
             return Results.NoContent();
-        });
+        })
+            .WithName("DeleteCategory")
+            .WithSummary("Видалити категорію за ID");
     }
 }

@@ -8,7 +8,9 @@ public static class PostEndpoints
     {
         var group = app.MapGroup("/posts").WithTags("Posts");
 
-        group.MapGet("/", () => Results.Ok(BlogStorage.Posts));
+        group.MapGet("/", () => Results.Ok(BlogStorage.Posts))
+            .WithName("GetAllPosts")
+            .WithSummary("Отримати список усіх постів");
 
         group.MapGet("/{id:int}", (int id) =>
         {
@@ -17,7 +19,9 @@ public static class PostEndpoints
             if (post == null) return Results.NotFound();
 
             return Results.Ok(post);
-        });
+        })
+            .WithName("GetPostById")
+            .WithSummary("Отримати пост за ID");
 
         group.MapGet("/{slug}", (string slug) =>
         {
@@ -26,21 +30,27 @@ public static class PostEndpoints
             if (post == null) return Results.NotFound();
 
             return Results.Ok(post);
-        });
+        })
+            .WithName("GetPostBySlug")
+            .WithSummary("Отримати пост за його slug");
 
         group.MapGet("/q", (string search) =>
         {
             var found = BlogStorage.Posts.Where(p => p.Title.ToLower().Contains(search.ToLower()) || p.Content.ToLower().Contains(search.ToLower())).ToList();
 
             return Results.Ok(found);
-        });
+        })
+            .WithName("SearchPosts")
+            .WithSummary("Пошук постів за ключовим словом у назві чи контенті");
 
         group.MapGet("/category/{categorySlug}", (string categorySlug) =>
         {
             var filter = BlogStorage.Posts.Where(p => p.Categories.Any(c => c.Slug.ToLower() == categorySlug.ToLower())).ToList();
 
             return Results.Ok(filter);
-        });
+        })
+            .WithName("GetPostsByCategorySlug")
+            .WithSummary("Отримати пости за slug категорії");
 
         group.MapPost("/", (CreatePostRequest request) =>
         {
@@ -69,7 +79,9 @@ public static class PostEndpoints
             var newPost = BlogStorage.AddPost(post);
 
             return Results.Ok(newPost);
-        });
+        })
+            .WithName("CreatePost")
+            .WithSummary("Створити новий пост із вибором категорій");
 
         group.MapPatch("/{id:int}", (int id, Post updatePost) =>
         {
@@ -82,7 +94,9 @@ public static class PostEndpoints
             post.ImageUrl = string.IsNullOrWhiteSpace(updatePost.ImageUrl) ? post.ImageUrl : updatePost.ImageUrl;
 
             return Results.Ok(post);
-        });
+        })
+            .WithName("EditPost")
+            .WithSummary("Редагування title, content та imageUrl поста");
 
         group.MapDelete("/{id:int}", (int id) =>
         {
@@ -92,6 +106,8 @@ public static class PostEndpoints
 
             BlogStorage.Posts.Remove(post);
             return Results.NoContent();
-        });
+        })
+            .WithName("DeletePost")
+            .WithSummary("Видалити пост за ID");
     }
 }
