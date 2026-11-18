@@ -1,0 +1,17 @@
+﻿@HostAddress = http://localhost:5273
+
+###
+GET {{HostAddress}}/identify
+###
+GET {{HostAddress}}/cart
+###
+POST {{HostAddress}}/cart/add/1
+###
+POST {{HostAddress}}/cart/add/2
+###
+POST {{HostAddress}}/cart/clear
+###
+
+###
+POST {{HostAddress}}/cart/add/999
+###
