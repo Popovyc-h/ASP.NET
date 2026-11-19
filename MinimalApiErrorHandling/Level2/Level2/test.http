@@ -1,0 +1,19 @@
+﻿@baseUrl = http://localhost:5190
+
+###
+POST {{baseUrl}}/items
+Content-Type: application/json
+
+{
+  "name": "Notebook"
+}
+
+###
+POST {{baseUrl}}/items
+Content-Type: application/json
+
+###
+
+###
+GET {{baseUrl}}/v1/unknown
+###
